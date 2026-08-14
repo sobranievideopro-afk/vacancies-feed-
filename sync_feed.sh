@@ -1,10 +1,10 @@
 #!/bin/bash
-# Забирает внешний фид (LinkedIn/rabota/Хабр/карьерные сайты) из GitHub
-# и склеивает с локальным файлом hh+Telegram в общий vacancies_all.json.
-# Запуск кроном на Timeweb, см. INTEGRATION.md.
+# Забирает внешний фид (LinkedIn / rabota.ru / Хабр / карьерные сайты)
+# из GitHub в vacancies_external.json. Локальные файлы не трогает.
 set -e
 cd "$(dirname "$0")"
 curl -sf -o vacancies_external.json \
   "https://raw.githubusercontent.com/sobranievideopro-afk/vacancies-feed-/main/vacancies.json"
-python3 merge_feeds.py
-echo "$(date '+%F %T') синхронизировано: $(python3 -c "import json;print(json.load(open('vacancies_all.json'))['total'])") вакансий"
+echo "$(date '+%F %T') внешний фид обновлён: $(python3 -c "import json;print(json.load(open('vacancies_external.json'))['total'])") вакансий"
+# Склейка с локальным файлом отключена. Если позже понадобится единый файл —
+# запустите: python3 merge_feeds.py (опционально, см. INTEGRATION.md)
