@@ -91,7 +91,7 @@ apt update && apt install -y python3-pip git
 git clone https://github.com/sobranievideopro-afk/vacancies-feed-.git /opt/vacancy_parser
 cd /opt/vacancy_parser && pip3 install -r requirements.txt
 
-# 3. Проверить разовый запуск (соберёт hh.ru + Telegram)
+# 3. Проверить разовый запуск (соберёт rabota.ru, Хабр, LinkedIn, карьерные сайты)
 python3 parser.py
 
 # 4. Автозапуск ежедневно в 12:00 по Москве
@@ -99,12 +99,9 @@ timedatectl set-timezone Europe/Moscow
 (crontab -l 2>/dev/null; echo "0 12 * * * cd /opt/vacancy_parser && /usr/bin/python3 parser.py >> parser.log 2>&1") | crontab -
 ```
 
-В `config.py` уже стоит `ENABLED_SOURCES = ["hh", "telegram"]` — на этом
-сервере работают только hh.ru и Telegram. Остальные источники (LinkedIn,
-rabota.ru, Хабр, карьерные сайты) публикуются внешним сборщиком в тот же
-GitHub-репозиторий (vacancies.json), портал склеивает оба файла.
-Чтобы не перезаписывать внешний файл, задайте на сервере своё имя выхода
-в config.py: `OUTPUT_JSON = "vacancies_hh_tg.json"`.
+Этот код можно запускать на любом сервере ВНЕ РФ (LinkedIn из России
+недоступен) либо доверить внешнему сборщику, публикующему
+vacancies.json прямо в этот репозиторий.
 
 ### REST API на этом же сервере (опционально)
 

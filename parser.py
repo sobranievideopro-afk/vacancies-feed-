@@ -4,12 +4,13 @@
 для проекта «Кадровые резервы.РФ».
 
 Источники (только публичные страницы, без API job-сайтов):
-  - hh.ru — HTML страницы поиска
   - rabota.ru — HTML страницы поиска
   - career.habr.com — HTML страницы поиска
-  - LinkedIn Jobs — публичная гостевая выдача
+  - LinkedIn Jobs — публичная гостевая выдача + обход через DuckDuckGo
   - открытые карьерные сайты компаний (config.COMPANY_CAREER_PAGES)
-  - публичные Telegram-каналы через t.me/s/<канал>
+
+hh.ru и Telegram сознательно исключены — их покрывает отдельная связка
+на сервере пользователя.
 
 Запуск:  python parser.py
 Выход:   vacancies.json (структурировано) + digest.md (человекочитаемый дайджест)
@@ -48,7 +49,7 @@ class Vacancy:
     title: str
     company: str
     url: str                       # точная HTTPS-ссылка на первоисточник
-    source: str                    # hh / rabota / habr / linkedin / company / telegram
+    source: str                    # rabota / habr / linkedin / company
     location: str = ""
     city: str = ""          # один из config.CITIES или "Другое"
     salaryText: str = "Вознаграждение по договорённости"
@@ -184,40 +185,6 @@ def make_summary(title: str, company: str, page_text: str) -> str:
 # ---------------------------------------------------------------------------
 # Парсеры источников
 # ---------------------------------------------------------------------------
-def _parse_hh_html(html: str | None) -> list[Vacancy]:
-    out = []
-    if not html:
-        return out
-    soup = BeautifulSoup(html, "html.parser")
-    cards = soup.select('[data-qa="serp-item"], [data-qa*="vacancy-serp__vacancy"]')
-    if not cards:  # запасной селектор при смене вёрстки
-        cards = [a.find_parent("div") for a in soup.select('a[href*="/vacancy/"]')]
-    for card in cards:
-        if card is None:
-            continue
-        a = card.select_one('a[data-qa*="serp-item__title"], a[href*="/vacancy/"]')
-        if not a:
-            continue
-        title = a.get_text(" ", strip=True)
-        if not title or not title_passes(title):
-            continue
-        url = a["href"].split("?")[0]
-        comp_el = card.select_one('[data-qa*="company-name"], a[href*="/employer/"]')
-        company = comp_el.get_text(" ", strip=True) if comp_el else ""
-        loc_el = card.select_one('[data-qa*="address"]')
-        location = loc_el.get_text(" ", strip=True) if loc_el else ""
-        sal_el = card.select_one('[data-qa*="compensation"]')
-        salary_text, level = parse_salary(sal_el.get_text(" ", strip=True) if sal_el else "")
-        out.append(Vacancy(title=title, company=company, url=url, source="hh.ru",
-                           location=location, salaryText=salary_text, salaryLevel=level,
-                           scopeScore=scope_score(title)))
-    return out
-
-
-def parse_hh(query: str) -> list[Vacancy]:
-    return _parse_hh_html(fetch(config.HH_SEARCH_URL.format(query=quote_plus(query))))
-
-
 def parse_rabota(query: str) -> list[Vacancy]:
     out = []
     html = fetch(config.RABOTA_SEARCH_URL.format(query=quote_plus(query)))
@@ -342,61 +309,18 @@ def parse_company_pages() -> list[Vacancy]:
     return out
 
 
-def parse_telegram_channels() -> list[Vacancy]:
-    """Публичное веб-превью t.me/s/<канал> — без API и без логина."""
-    out = []
-    url_re = re.compile(r"https://\S+", re.IGNORECASE)
-    for channel in config.TELEGRAM_CHANNELS:
-        print(f"  → telegram: @{channel}")
-        html = fetch(f"https://t.me/s/{channel}")
-        if not html:
-            continue
-        soup = BeautifulSoup(html, "html.parser")
-        for msg in soup.select(".tgme_widget_message"):
-            text_el = msg.select_one(".tgme_widget_message_text")
-            if not text_el:
-                continue
-            text = text_el.get_text("\n", strip=True)
-            first_line = text.split("\n", 1)[0][:120]
-            if not title_passes(text[:400]):
-                continue
-            link_el = msg.select_one("a.tgme_widget_message_date")
-            msg_url = link_el["href"] if link_el else f"https://t.me/s/{channel}"
-            ext = url_re.search(text)
-            salary_text, level = parse_salary(text)
-            out.append(Vacancy(
-                title=first_line,
-                company=f"@{channel}",
-                url=(ext.group(0).rstrip(").,") if ext else msg_url),
-                source=f"t.me/{channel}",
-                salaryText=salary_text, salaryLevel=level,
-                summary=text[:400],
-                scopeScore=scope_score(text[:400]),
-            ))
-    return out
-
-
 # ---------------------------------------------------------------------------
 # Оркестрация
 # ---------------------------------------------------------------------------
-def parse_hh_city(query: str, city: str, area: int) -> list[Vacancy]:
-    """Целевой поиск hh.ru по конкретному городу (area id)."""
-    url = config.HH_CITY_SEARCH_URL.format(query=quote_plus(query), area=area)
-    out = _parse_hh_html(fetch(url))
-    for v in out:
-        v.city = city
-    return out
-
-
 def collect() -> list[Vacancy]:
     all_v: dict[str, Vacancy] = {}
 
     for query in config.SEARCH_QUERIES:
         print(f"Запрос: «{query}»")
-        source_map = {"hh": parse_hh, "rabota": parse_rabota,
-                      "habr": parse_habr, "linkedin": parse_linkedin}
+        source_map = {"rabota": parse_rabota, "habr": parse_habr,
+                      "linkedin": parse_linkedin}
         enabled = getattr(config, "ENABLED_SOURCES",
-                          ["hh", "rabota", "habr", "linkedin", "company", "telegram"])
+                          ["rabota", "habr", "linkedin", "company"])
         for name, fn in source_map.items():
             if name not in enabled:
                 continue
@@ -405,27 +329,6 @@ def collect() -> list[Vacancy]:
                     all_v.setdefault(v.dedup_key(), v)
             except Exception as e:
                 print(f"  [!] {fn.__name__}: {e}", file=sys.stderr)
-
-    if config.PER_CITY_SEARCH and "hh" in enabled:
-        print("Целевой проход по городам…")
-        for city, meta in config.CITIES.items():
-            print(f"  → {city}")
-            for query in config.CITY_SEARCH_QUERIES:
-                try:
-                    for v in parse_hh_city(query, city, meta["hh_area"]):
-                        all_v.setdefault(v.dedup_key(), v)
-                except Exception as e:
-                    print(f"  [!] hh {city}: {e}", file=sys.stderr)
-
-    if "company" in enabled:
-        print("Карьерные сайты компаний…")
-        for v in parse_company_pages():
-            all_v.setdefault(v.dedup_key(), v)
-
-    if "telegram" in enabled and config.TELEGRAM_CHANNELS:
-        print("Telegram-каналы…")
-        for v in parse_telegram_channels():
-            all_v.setdefault(v.dedup_key(), v)
 
     return list(all_v.values())
 
