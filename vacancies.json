@@ -1,20 +1,137 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-14T07:09:51+00:00",
-  "total": 10,
+  "generatedAt": "2026-08-14T07:30:28+00:00",
+  "total": 12,
   "cities": {
+    "Москва": 6,
     "Санкт-Петербург": 5,
-    "Москва": 4,
     "Другое": 1
   },
   "lastRun": {
-    "date": "2026-08-14T07:09:51+00:00",
+    "date": "2026-08-14T07:30:28+00:00",
     "added": 2,
     "removed": 0,
-    "reverified": 8
+    "reverified": 10
   },
   "note": "Поля role/*, terms/* и часть profile/* из публичных карточек не извлекаются и оставлены null под обогащение. Полный исходный текст вакансий не хранится намеренно (авторские права площадок) — см. basic.description и url. companyLogo: null => показывать инициалы компании или плейсхолдер.",
   "vacancies": [
+    {
+      "id": "8d1deea3ab6c5e79",
+      "portal": "career.habr.com",
+      "url": "https://career.habr.com/vacancies/1000167951",
+      "sourceVacancyId": "1000167951",
+      "basic": {
+        "title": "Директор по маркетингу",
+        "company": "Федеральный центр подбора",
+        "companyDescription": null,
+        "city": "Москва",
+        "region": "Москва, Санкт-Петербург, Казань",
+        "workFormat": null,
+        "employmentType": "полная",
+        "salary": {
+          "from": 410000,
+          "to": 410000,
+          "currency": "RUB",
+          "gross": false,
+          "disclosed": true,
+          "text": "от 410 000 ₽ на руки",
+          "levelRub": 410000
+        },
+        "description": "Гарантированный оклад 410 000 ₽ (net), квартальная премия 500 000 ₽ + годовой бонус. Полный стек: performance-реклама (Яндекс Директ, VK Ads, myTarget), медийка, SMM, CRM-маркетинг, программы лояльности, офлайн-промо. Требуются навыки защиты стратегии и бюджета на языке бизнеса (выручка, маржа, доля рынка). Оформление по ТК с первого дня.",
+        "requirements": null,
+        "conditions": null,
+        "publishedAt": null,
+        "applyContact": null
+      },
+      "profile": {
+        "function": null,
+        "industry": null,
+        "positionLevel": "C-level / директор функции",
+        "totalExperienceYears": null,
+        "managementExperienceYears": null,
+        "skills": [],
+        "competencies": [],
+        "mustHave": [],
+        "niceToHave": [],
+        "education": null,
+        "languages": [],
+        "certificates": [],
+        "industryExperience": [],
+        "teamManagement": null,
+        "teamSize": null,
+        "responsibilityScope": null
+      },
+      "role": {
+        "purpose": null,
+        "expectedResults": null,
+        "kpi": null,
+        "responsibilityZone": null,
+        "reportsTo": null,
+        "hasDirectReports": null,
+        "openingReason": null,
+        "companyStage": null,
+        "businessChallenges": null,
+        "probationPeriod": null,
+        "first90DaysPlan": null,
+        "tasks": []
+      },
+      "terms": {
+        "schedule": null,
+        "officeAddress": null,
+        "businessTrips": null,
+        "relocation": null,
+        "relocationPackage": null,
+        "bonusSize": null,
+        "compensationStructure": null,
+        "dms": null,
+        "corporateEducation": null,
+        "equipment": null,
+        "vacation": null,
+        "benefits": []
+      },
+      "apply": {
+        "contactPerson": null,
+        "email": null,
+        "phone": null,
+        "externalApplyUrl": "https://career.habr.com/vacancies/1000167951",
+        "inPlatformApply": false,
+        "coverLetterRequired": null,
+        "screeningQuestions": [],
+        "selectionStages": [],
+        "deadline": null
+      },
+      "meta": {
+        "firstSeenAt": "2026-08-14T07:30:28+00:00",
+        "lastCheckedAt": "2026-08-14T07:30:28+00:00",
+        "sourceUpdatedAt": null,
+        "status": "active",
+        "language": "ru",
+        "summary": "Гарантированный оклад 410 000 ₽ (net), квартальная премия 500 000 ₽ + годовой бонус. Полный стек: performance-реклама (Яндекс Директ, VK Ads, myTarget), медийка, SMM, CRM-маркетинг, программы лояльности, офлайн-промо. Требуются навыки защиты стратегии и бюджета на языке бизнеса (выручка, маржа, доля рынка). Оформление по ТК с первого дня.",
+        "extractedAt": "2026-08-14T07:30:28+00:00",
+        "extractionMethod": "public-page-parse",
+        "confidence": {
+          "title": 1.0,
+          "salary": 1.0,
+          "city": 1.0,
+          "workFormat": 0.0,
+          "employmentType": 0.5,
+          "teamSize": 0.0
+        },
+        "possibleDuplicate": true,
+        "duplicateUrls": [
+          "https://career.habr.com/vacancies/1000167952"
+        ]
+      },
+      "companyLogo": {
+        "url": null,
+        "file": null,
+        "sourceUrl": null,
+        "alt": "Федеральный центр подбора",
+        "format": null,
+        "updatedAt": null,
+        "verified": false
+      }
+    },
     {
       "id": "8859cbbbb38a0d95",
       "portal": "rabota.ru",
@@ -344,6 +461,121 @@
           "salary": 1.0,
           "city": 1.0,
           "workFormat": 0.7,
+          "employmentType": 0.5,
+          "teamSize": 0.0
+        },
+        "possibleDuplicate": false,
+        "duplicateUrls": []
+      },
+      "companyLogo": {
+        "url": null,
+        "file": null,
+        "sourceUrl": null,
+        "alt": "Intelinvest",
+        "format": null,
+        "updatedAt": null,
+        "verified": false
+      }
+    },
+    {
+      "id": "ff34a4546e068be0",
+      "portal": "career.habr.com",
+      "url": "https://career.habr.com/vacancies/1000154444",
+      "sourceVacancyId": "1000154444",
+      "basic": {
+        "title": "Директор по маркетингу (CMO)",
+        "company": "Intelinvest",
+        "companyDescription": null,
+        "city": "Москва",
+        "region": "Москва",
+        "workFormat": null,
+        "employmentType": "полная",
+        "salary": {
+          "from": 200000,
+          "to": 200000,
+          "currency": "RUB",
+          "gross": null,
+          "disclosed": true,
+          "text": "от 200 000 ₽",
+          "levelRub": 200000
+        },
+        "description": "Зарплата от 200 000 ₽ + бонусы и возможный опцион на акции. Руководство маркетинговой стратегией с hands-on участием: digital-кампании, управление бюджетом, внешние партнёры и медиаплатформы. Нужен английский для работы с международными партнёрами.",
+        "requirements": null,
+        "conditions": null,
+        "publishedAt": null,
+        "applyContact": null
+      },
+      "profile": {
+        "function": null,
+        "industry": null,
+        "positionLevel": "C-level / директор функции",
+        "totalExperienceYears": null,
+        "managementExperienceYears": null,
+        "skills": [],
+        "competencies": [],
+        "mustHave": [],
+        "niceToHave": [],
+        "education": null,
+        "languages": [],
+        "certificates": [],
+        "industryExperience": [],
+        "teamManagement": null,
+        "teamSize": null,
+        "responsibilityScope": null
+      },
+      "role": {
+        "purpose": null,
+        "expectedResults": null,
+        "kpi": null,
+        "responsibilityZone": null,
+        "reportsTo": null,
+        "hasDirectReports": null,
+        "openingReason": null,
+        "companyStage": null,
+        "businessChallenges": null,
+        "probationPeriod": null,
+        "first90DaysPlan": null,
+        "tasks": []
+      },
+      "terms": {
+        "schedule": null,
+        "officeAddress": null,
+        "businessTrips": null,
+        "relocation": null,
+        "relocationPackage": null,
+        "bonusSize": null,
+        "compensationStructure": null,
+        "dms": null,
+        "corporateEducation": null,
+        "equipment": null,
+        "vacation": null,
+        "benefits": []
+      },
+      "apply": {
+        "contactPerson": null,
+        "email": null,
+        "phone": null,
+        "externalApplyUrl": "https://career.habr.com/vacancies/1000154444",
+        "inPlatformApply": false,
+        "coverLetterRequired": null,
+        "screeningQuestions": [],
+        "selectionStages": [],
+        "deadline": null
+      },
+      "meta": {
+        "firstSeenAt": "2026-08-14T07:30:28+00:00",
+        "lastCheckedAt": "2026-08-14T07:30:28+00:00",
+        "sourceUpdatedAt": null,
+        "status": "active",
+        "language": "ru",
+        "summary": "Зарплата от 200 000 ₽ + бонусы и возможный опцион на акции. Руководство маркетинговой стратегией с hands-on участием: digital-кампании, управление бюджетом, внешние партнёры и медиаплатформы. Нужен английский для работы с международными партнёрами.",
+        "extractedAt": "2026-08-14T07:30:28+00:00",
+        "extractionMethod": "public-page-parse",
+        "confidence": {
+          "title": 1.0,
+          "salary": 1.0,
+          "city": 1.0,
+          "workFormat": 0.0,
           "employmentType": 0.5,
           "teamSize": 0.0
         },
