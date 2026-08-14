@@ -289,6 +289,43 @@ def parse_linkedin(query: str) -> list[Vacancy]:
     return out
 
 
+def parse_superjob(query: str) -> list[Vacancy]:
+    out = []
+    html = fetch(config.SUPERJOB_SEARCH_URL.format(query=quote_plus(query)))
+    if not html:
+        return out
+    soup = BeautifulSoup(html, "html.parser")
+    for a in soup.select('a[href*="/vakansii/"]'):
+        title = a.get_text(" ", strip=True)
+        if not title or not title_passes(title):
+            continue
+        url = urljoin("https://www.superjob.ru", a["href"].split("?")[0])
+        if url.endswith((".html",)) and "/vakansii/" in url and not re.search(r"-\d+\.html$", url):
+            continue  # это ссылка на категорию поиска, не на конкретную вакансию
+        card = a.find_parent(["div", "article"]) or a
+        salary_text, level = parse_salary(card.get_text(" ", strip=True))
+        out.append(Vacancy(title=title, company="", url=url, source="superjob.ru",
+                           salaryText=salary_text, salaryLevel=level,
+                           scopeScore=scope_score(title)))
+    return out
+
+
+def parse_executive(query: str) -> list[Vacancy]:
+    out = []
+    html = fetch(config.EXECUTIVE_RU_JOBS_URL)
+    if not html:
+        return out
+    soup = BeautifulSoup(html, "html.parser")
+    for a in soup.find_all("a", href=True):
+        title = a.get_text(" ", strip=True)
+        if not title or len(title) > 120 or not title_passes(title):
+            continue
+        url = urljoin("https://www.e-xecutive.ru", a["href"])
+        out.append(Vacancy(title=title, company="", url=url, source="e-xecutive.ru",
+                           scopeScore=scope_score(title)))
+    return out
+
+
 def parse_company_pages() -> list[Vacancy]:
     out = []
     for site in config.COMPANY_CAREER_PAGES:
@@ -319,7 +356,8 @@ def collect() -> list[Vacancy]:
     for query in config.SEARCH_QUERIES:
         print(f"Запрос: «{query}»")
         source_map = {"rabota": parse_rabota, "habr": parse_habr,
-                      "linkedin": parse_linkedin}
+                      "linkedin": parse_linkedin, "superjob": parse_superjob,
+                      "executive": parse_executive}
         enabled = getattr(config, "ENABLED_SOURCES",
                           ["rabota", "habr", "linkedin", "company"])
         for name, fn in source_map.items():

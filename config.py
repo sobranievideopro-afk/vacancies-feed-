@@ -12,7 +12,7 @@
 # связка на сервере пользователя (Timeweb).
 # Возможные значения: "rabota", "habr", "linkedin", "company"
 # ---------------------------------------------------------------------------
-ENABLED_SOURCES = ["rabota", "habr", "linkedin", "company"]
+ENABLED_SOURCES = ["rabota", "habr", "linkedin", "company", "superjob", "executive"]
 
 # ---------------------------------------------------------------------------
 # Поисковые запросы (используются для hh.ru, rabota.ru, career.habr.com, LinkedIn)
@@ -57,6 +57,16 @@ CITIES = {
 # area id можно сверить в открытом справочнике: https://api.hh.ru/areas
 
 # Города используются для распознавания из текста вакансии (поле city).
+
+
+# ---------------------------------------------------------------------------
+# Дополнительные порталы вакансий (не job-API, обычные страницы поиска).
+# career.ru и hh.ru/career сюда намеренно не входят — это hh.ru под другим
+# именем/его собственная страница найма, а hh.ru ведёт отдельный скрипт.
+# ---------------------------------------------------------------------------
+SUPERJOB_SEARCH_URL = "https://www.superjob.ru/vacancy/search/?keywords[0][keys]={query}"
+EXECUTIVE_RU_JOBS_URL = "https://www.e-xecutive.ru/jobs"
+WORK_RU_SEARCH_URL = "https://www.work.ru/resume/search/?q={query}"  # неверифицировано, проверить на первом прогоне
 
 # ---------------------------------------------------------------------------
 # Фильтры по названию должности
@@ -110,30 +120,39 @@ DDG_SEARCH_URL = "https://html.duckduckgo.com/html/?q={query}"
 # проходит фильтр TITLE_INCLUDE.
 # ---------------------------------------------------------------------------
 COMPANY_CAREER_PAGES = [
-    # Ваши приоритетные компании
+    # Приоритетные компании пользователя
     {"company": "Mars",           "url": "https://rus.mars.com/careers"},
     {"company": "2ГИС",           "url": "https://hr.2gis.ru/vacancies"},
     {"company": "Логика Молока",  "url": "https://logikamoloka.ru/career"},
-    {"company": "Т-Банк",         "url": "https://www.tbank.ru/career/vacancies/"},
     {"company": "Точка",          "url": "https://tochka.com/hiring/"},
-    # Топ-компании России (открытые карьерные разделы)
-    {"company": "Сбер",           "url": "https://rabota.sber.ru/vacancies"},
+    # Корпоративный список — проверен и исправлен:
     {"company": "Яндекс",         "url": "https://yandex.ru/jobs/vacancies"},
-    {"company": "VK",             "url": "https://team.vk.company/vacancy/"},
-    {"company": "МТС",            "url": "https://job.mts.ru/vacancies"},
-    {"company": "МегаФон",        "url": "https://job.megafon.ru/vacancy"},
-    {"company": "Ozon",           "url": "https://job.ozon.ru/vacancies"},
-    {"company": "X5 Group",       "url": "https://rabota.x5.ru/vacancies"},
+    {"company": "Сбер",           "url": "https://sber.ru/ru/careers"},
+    {"company": "Газпром нефть",  "url": "https://gpn-career.ru"},
+    {"company": "МТС",            "url": "https://mts.ru/careers"},
+    {"company": "Северсталь",     "url": "https://career.severstal.com/vacancies/"},
+    {"company": "Т-Банк",         "url": "https://www.tbank.ru/career/vacancies/"},
+    {"company": "ВТБ",            "url": "https://vtb.ru/career/"},
     {"company": "Магнит",         "url": "https://rabota.magnit.ru/vacancy/"},
+    {"company": "X5 Group",       "url": "https://x5.ru/careers"},
+    {"company": "Ростелеком",     "url": "https://rt.ru/career"},
+    {"company": "Аэрофлот",       "url": "https://www.aeroflot.ru/ru/jobs"},
+    {"company": "МТС Банк",       "url": "https://www.mtsbank.ru/o-banke/career/"},
+    {"company": "Ozon",           "url": "https://job.ozon.ru/vacancies"},
+    {"company": "VK",             "url": "https://team.vk.company/vacancy/"},
     {"company": "Росатом",        "url": "https://rosatom-career.ru/vacancies"},
     {"company": "СИБУР",          "url": "https://career.sibur.ru/vacancies/"},
-    {"company": "Северсталь",     "url": "https://career.severstal.com/vacancies/"},
     {"company": "Авито",          "url": "https://career.avito.com/vacancies/"},
-    # ВАЖНО: часть этих сайтов — SPA на JavaScript. Универсальный HTML-парсер
-    # соберёт с них только то, что есть в первичной вёрстке; если карьерный
-    # раздел рендерится целиком на клиенте, вакансии с него не подтянутся —
-    # это ожидаемое ограничение подхода «без браузерной автоматизации».
-    # URL со временем меняются — при нулевой выдаче по компании проверьте адрес.
+    # Danone и Heineken свернули розничный бизнес в РФ (2023-2024) — карьерные
+    # страницы могут быть недействующими; оставлены с пометкой, парсер
+    # просто получит нулевую выдачу если сайт не отвечает.
+    {"company": "Danone",         "url": "https://danone.ru/career", "uncertain": True},
+    {"company": "Heineken",       "url": "https://heineken.ru/ru/careers", "uncertain": True},
+    # НЕ включены из списка пользователя:
+    #  - HeadHunter career.ru — технически алиас hh.ru, исключён вместе с hh.ru
+    #  - hh.ru/career, superjob.ru/career — это страницы "работа у нас" самих
+    #    порталов, а не каталоги вакансий других компаний
+    # Многие карьерные разделы — SPA на JS; нулевая выдача по компании ожидаема.
 ]
 
 
