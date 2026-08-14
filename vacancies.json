@@ -1,18 +1,18 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-14T07:52:48+00:00",
-  "total": 16,
+  "generatedAt": "2026-08-14T08:04:05+00:00",
+  "total": 18,
   "cities": {
-    "Москва": 10,
-    "Санкт-Петербург": 5,
+    "Москва": 11,
+    "Санкт-Петербург": 6,
     "Другое": 1
   },
   "lastRun": {
-    "date": "2026-08-14T07:52:48+00:00",
-    "added": 4,
+    "date": "2026-08-14T08:04:05+00:00",
+    "added": 2,
     "removed": 0,
-    "reverified": 12,
-    "note": "Целевой прогон под 30 вакансий: добавлено 4 новых с rabota.ru (Москва). LinkedIn/Хабр по остальным ролям в этом прогоне качественных новых кандидатов не дали — выдача либо дублировала уже собранное, либо не проходила фильтр масштаба ответственности."
+    "reverified": 16,
+    "note": "Прогон по всем добавленным источникам: SuperJob — капча на прямой доступ (0 карточек); Executive.ru — пустой каталог, 0 активных вакансий; Хабр по HR-директору — 0 открытых вакансий; Казань/Екатеринбург по rabota.ru — качественных C-Level карточек нет (в основном линейные позиции). Живой урожай дал Хабр по CPO: +2 (СПб 600К, Москва по договорённости). Карьерные сайты ВТБ/Т-Банк/Сбер — публичные вакансии для топ-менеджмента в открытом виде не индексируются, только раздел массового найма."
   },
   "note": "Поля role/*, terms/* и часть profile/* из публичных карточек не извлекаются и оставлены null под обогащение. Полный исходный текст вакансий не хранится намеренно (авторские права площадок) — см. basic.description и url. companyLogo: null => показывать инициалы компании или плейсхолдер.",
   "vacancies": [
@@ -129,6 +129,121 @@
         "format": "PNG",
         "updatedAt": "2026-08-14T07:52:48+00:00",
         "verified": true
+      }
+    },
+    {
+      "id": "92a255bf851edfef",
+      "portal": "career.habr.com",
+      "url": "https://career.habr.com/vacancies/1000156132",
+      "sourceVacancyId": "1000156132",
+      "basic": {
+        "title": "Директор по продукту / Chief Product Officer",
+        "company": "(подбор персонала в ИТ-компании)",
+        "companyDescription": null,
+        "city": "Санкт-Петербург",
+        "region": "Санкт-Петербург",
+        "workFormat": null,
+        "employmentType": "полная",
+        "salary": {
+          "from": 600000,
+          "to": 600000,
+          "currency": "RUB",
+          "gross": null,
+          "disclosed": true,
+          "text": "до 600 000 ₽",
+          "levelRub": 600000
+        },
+        "description": "Ведущий российский конструктор сайтов (лендинги, интернет-магазины, корпоративные сайты) ищет CPO. Требуется data-driven подход, опыт запуска и перезапуска B2C-продуктов, углублённое понимание маркетинга.",
+        "requirements": null,
+        "conditions": null,
+        "publishedAt": null,
+        "applyContact": null
+      },
+      "profile": {
+        "function": null,
+        "industry": null,
+        "positionLevel": "C-level / директор функции",
+        "totalExperienceYears": null,
+        "managementExperienceYears": null,
+        "skills": [],
+        "competencies": [],
+        "mustHave": [],
+        "niceToHave": [],
+        "education": null,
+        "languages": [],
+        "certificates": [],
+        "industryExperience": [],
+        "teamManagement": null,
+        "teamSize": null,
+        "responsibilityScope": null
+      },
+      "role": {
+        "purpose": null,
+        "expectedResults": null,
+        "kpi": null,
+        "responsibilityZone": null,
+        "reportsTo": null,
+        "hasDirectReports": null,
+        "openingReason": null,
+        "companyStage": null,
+        "businessChallenges": null,
+        "probationPeriod": null,
+        "first90DaysPlan": null,
+        "tasks": []
+      },
+      "terms": {
+        "schedule": null,
+        "officeAddress": null,
+        "businessTrips": null,
+        "relocation": null,
+        "relocationPackage": null,
+        "bonusSize": null,
+        "compensationStructure": null,
+        "dms": null,
+        "corporateEducation": null,
+        "equipment": null,
+        "vacation": null,
+        "benefits": []
+      },
+      "apply": {
+        "contactPerson": null,
+        "email": null,
+        "phone": null,
+        "externalApplyUrl": "https://career.habr.com/vacancies/1000156132",
+        "inPlatformApply": false,
+        "coverLetterRequired": null,
+        "screeningQuestions": [],
+        "selectionStages": [],
+        "deadline": null
+      },
+      "meta": {
+        "firstSeenAt": "2026-08-14T08:04:05+00:00",
+        "lastCheckedAt": "2026-08-14T08:04:05+00:00",
+        "sourceUpdatedAt": null,
+        "status": "active",
+        "language": "ru",
+        "summary": "Ведущий российский конструктор сайтов (лендинги, интернет-магазины, корпоративные сайты) ищет CPO. Требуется data-driven подход, опыт запуска и перезапуска B2C-продуктов, углублённое понимание маркетинга.",
+        "extractedAt": "2026-08-14T08:04:05+00:00",
+        "extractionMethod": "public-page-parse",
+        "confidence": {
+          "title": 1.0,
+          "salary": 1.0,
+          "city": 1.0,
+          "workFormat": 0.0,
+          "employmentType": 0.5,
+          "teamSize": 0.0
+        },
+        "possibleDuplicate": false,
+        "duplicateUrls": []
+      },
+      "companyLogo": {
+        "url": null,
+        "file": null,
+        "sourceUrl": null,
+        "alt": "(подбор персонала в ИТ-компании)",
+        "format": null,
+        "updatedAt": null,
+        "verified": false
       }
     },
     {
@@ -1853,6 +1968,121 @@
         "file": null,
         "sourceUrl": null,
         "alt": "ЧОП «Подвиг»",
+        "format": null,
+        "updatedAt": null,
+        "verified": false
+      }
+    },
+    {
+      "id": "8953c7f761bf1b16",
+      "portal": "career.habr.com",
+      "url": "https://career.habr.com/vacancies/1000129202",
+      "sourceVacancyId": "1000129202",
+      "basic": {
+        "title": "Chief Product officer (CPO) SL Dating",
+        "company": "GRI",
+        "companyDescription": null,
+        "city": "Москва",
+        "region": "Москва",
+        "workFormat": null,
+        "employmentType": "полная",
+        "salary": {
+          "from": null,
+          "to": null,
+          "currency": null,
+          "gross": null,
+          "disclosed": false,
+          "text": "Вознаграждение по договорённости",
+          "levelRub": 0
+        },
+        "description": "Руководство продуктовой стратегией дейтинг-платформы, построение и менторство продуктовой команды.",
+        "requirements": null,
+        "conditions": null,
+        "publishedAt": null,
+        "applyContact": null
+      },
+      "profile": {
+        "function": null,
+        "industry": null,
+        "positionLevel": "C-level / директор функции",
+        "totalExperienceYears": null,
+        "managementExperienceYears": null,
+        "skills": [],
+        "competencies": [],
+        "mustHave": [],
+        "niceToHave": [],
+        "education": null,
+        "languages": [],
+        "certificates": [],
+        "industryExperience": [],
+        "teamManagement": null,
+        "teamSize": null,
+        "responsibilityScope": null
+      },
+      "role": {
+        "purpose": null,
+        "expectedResults": null,
+        "kpi": null,
+        "responsibilityZone": null,
+        "reportsTo": null,
+        "hasDirectReports": null,
+        "openingReason": null,
+        "companyStage": null,
+        "businessChallenges": null,
+        "probationPeriod": null,
+        "first90DaysPlan": null,
+        "tasks": []
+      },
+      "terms": {
+        "schedule": null,
+        "officeAddress": null,
+        "businessTrips": null,
+        "relocation": null,
+        "relocationPackage": null,
+        "bonusSize": null,
+        "compensationStructure": null,
+        "dms": null,
+        "corporateEducation": null,
+        "equipment": null,
+        "vacation": null,
+        "benefits": []
+      },
+      "apply": {
+        "contactPerson": null,
+        "email": null,
+        "phone": null,
+        "externalApplyUrl": "https://career.habr.com/vacancies/1000129202",
+        "inPlatformApply": false,
+        "coverLetterRequired": null,
+        "screeningQuestions": [],
+        "selectionStages": [],
+        "deadline": null
+      },
+      "meta": {
+        "firstSeenAt": "2026-08-14T08:04:05+00:00",
+        "lastCheckedAt": "2026-08-14T08:04:05+00:00",
+        "sourceUpdatedAt": null,
+        "status": "active",
+        "language": "ru",
+        "summary": "Руководство продуктовой стратегией дейтинг-платформы, построение и менторство продуктовой команды.",
+        "extractedAt": "2026-08-14T08:04:05+00:00",
+        "extractionMethod": "public-page-parse",
+        "confidence": {
+          "title": 1.0,
+          "salary": 0.9,
+          "city": 1.0,
+          "workFormat": 0.0,
+          "employmentType": 0.5,
+          "teamSize": 0.0
+        },
+        "possibleDuplicate": false,
+        "duplicateUrls": []
+      },
+      "companyLogo": {
+        "url": null,
+        "file": null,
+        "sourceUrl": null,
+        "alt": "GRI",
         "format": null,
         "updatedAt": null,
         "verified": false
