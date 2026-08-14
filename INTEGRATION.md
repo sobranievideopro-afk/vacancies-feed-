@@ -78,29 +78,62 @@ fetch(API + "/api/vacancies?limit=10")
 </script>
 ```
 
-## Деплой на Railway
+## Деплой на Timeweb VPS (Ubuntu)
 
-1. Один проект, два сервиса из этой же папки:
-   - **worker**: Start Command `python scheduler.py`, переменные
-     `TZ=Europe/Moscow`, `RUN_AT=12:00`
-   - **web**: Start Command `uvicorn api_server:app --host 0.0.0.0 --port $PORT`,
-     переменная `ALLOWED_ORIGINS=https://кадровыерезервы.рф` (ваш домен)
-2. Общий **Volume**, смонтированный в рабочую папку обоих сервисов —
-   в нём живут `vacancies.json`, `digest.md` и `seen.json` (дедупликация).
-3. Push-модель (опционально): в worker добавьте переменные
-   `PORTAL_WEBHOOK_URL` и `PORTAL_API_TOKEN`, а запуск замените на
-   `python scheduler.py` с вызовом `push_to_portal.py` внутри — или
-   используйте Railway Cron вместо scheduler:
-
-   **Вариант с Railway Cron (проще):** один сервис, Cron Schedule
-   `0 9 * * *` (09:00 UTC = 12:00 МСК), Start Command
-   `python parser.py && python push_to_portal.py`.
-
-## Обычный сервер (VPS)
+Код уже в вашем GitHub — на сервере всё разворачивается пятью командами:
 
 ```bash
-crontab -e
-0 12 * * * cd /path/to/vacancy_parser && /usr/bin/python3 parser.py && /usr/bin/python3 push_to_portal.py >> parser.log 2>&1
+# 1. Зайти на сервер
+ssh root@ВАШ_IP
+
+# 2. Установить зависимости и склонировать репозиторий
+apt update && apt install -y python3-pip git
+git clone https://github.com/sobranievideopro-afk/vacancies-feed-.git /opt/vacancy_parser
+cd /opt/vacancy_parser && pip3 install -r requirements.txt
+
+# 3. Проверить разовый запуск (соберёт hh.ru + Telegram)
+python3 parser.py
+
+# 4. Автозапуск ежедневно в 12:00 по Москве
+timedatectl set-timezone Europe/Moscow
+(crontab -l 2>/dev/null; echo "0 12 * * * cd /opt/vacancy_parser && /usr/bin/python3 parser.py >> parser.log 2>&1") | crontab -
+```
+
+В `config.py` уже стоит `ENABLED_SOURCES = ["hh", "telegram"]` — на этом
+сервере работают только hh.ru и Telegram. Остальные источники (LinkedIn,
+rabota.ru, Хабр, карьерные сайты) публикуются внешним сборщиком в тот же
+GitHub-репозиторий (vacancies.json), портал склеивает оба файла.
+Чтобы не перезаписывать внешний файл, задайте на сервере своё имя выхода
+в config.py: `OUTPUT_JSON = "vacancies_hh_tg.json"`.
+
+### REST API на этом же сервере (опционально)
+
+```bash
+# systemd-сервис, чтобы API жил постоянно и поднимался после ребута
+cat > /etc/systemd/system/vacancy-api.service << 'UNIT'
+[Unit]
+Description=Kadrovye Rezervy Vacancy API
+After=network.target
+
+[Service]
+WorkingDirectory=/opt/vacancy_parser
+ExecStart=/usr/bin/python3 -m uvicorn api_server:app --host 0.0.0.0 --port 8080
+Restart=always
+Environment=ALLOWED_ORIGINS=https://xn----dtbhcmta3agdgke1a8k.xn--p1ai
+
+[Install]
+WantedBy=multi-user.target
+UNIT
+systemctl daemon-reload && systemctl enable --now vacancy-api
+```
+
+API будет доступен на `http://ВАШ_IP:8080/api/vacancies`. Для HTTPS
+поставьте сверху nginx + certbot или проксируйте через панель Timeweb.
+
+### Обновление кода на сервере
+
+```bash
+cd /opt/vacancy_parser && git pull
 ```
 
 ## Замечания

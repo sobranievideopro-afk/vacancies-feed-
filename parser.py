@@ -393,14 +393,20 @@ def collect() -> list[Vacancy]:
 
     for query in config.SEARCH_QUERIES:
         print(f"Запрос: «{query}»")
-        for fn in (parse_hh, parse_rabota, parse_habr, parse_linkedin):
+        source_map = {"hh": parse_hh, "rabota": parse_rabota,
+                      "habr": parse_habr, "linkedin": parse_linkedin}
+        enabled = getattr(config, "ENABLED_SOURCES",
+                          ["hh", "rabota", "habr", "linkedin", "company", "telegram"])
+        for name, fn in source_map.items():
+            if name not in enabled:
+                continue
             try:
                 for v in fn(query):
                     all_v.setdefault(v.dedup_key(), v)
             except Exception as e:
                 print(f"  [!] {fn.__name__}: {e}", file=sys.stderr)
 
-    if config.PER_CITY_SEARCH:
+    if config.PER_CITY_SEARCH and "hh" in enabled:
         print("Целевой проход по городам…")
         for city, meta in config.CITIES.items():
             print(f"  → {city}")
@@ -411,11 +417,12 @@ def collect() -> list[Vacancy]:
                 except Exception as e:
                     print(f"  [!] hh {city}: {e}", file=sys.stderr)
 
-    print("Карьерные сайты компаний…")
-    for v in parse_company_pages():
-        all_v.setdefault(v.dedup_key(), v)
+    if "company" in enabled:
+        print("Карьерные сайты компаний…")
+        for v in parse_company_pages():
+            all_v.setdefault(v.dedup_key(), v)
 
-    if config.TELEGRAM_CHANNELS:
+    if "telegram" in enabled and config.TELEGRAM_CHANNELS:
         print("Telegram-каналы…")
         for v in parse_telegram_channels():
             all_v.setdefault(v.dedup_key(), v)
