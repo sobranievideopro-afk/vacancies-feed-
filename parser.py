@@ -30,6 +30,7 @@ import requests
 from bs4 import BeautifulSoup
 
 import config
+from schema_v2 import build_card
 
 session = requests.Session()
 session.headers.update({
@@ -376,10 +377,11 @@ def write_outputs(vacancies: list[Vacancy]):
     for v in vacancies:
         by_city.setdefault(v.city or "Другое", []).append(v.url)
     payload = {
+        "schemaVersion": 2,
         "generatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "total": len(vacancies),
         "cities": {c: len(urls) for c, urls in sorted(by_city.items())},
-        "vacancies": [asdict(v) for v in vacancies],
+        "vacancies": [build_card(asdict(v)) for v in vacancies],
     }
     Path(config.OUTPUT_JSON).write_text(
         json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
